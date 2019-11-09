@@ -19,7 +19,7 @@ if(BUILD_EXAMPLES)
     add_subdirectory(${CMAKE_SOURCE_DIR}/examples)
 endif()
 
-install(TARGETS ${SLEIGH_DISASM_LIBNAME} ghidra_decompiler_sleigh ghidra_decompiler_base
+install(TARGETS ${SLEIGH_DISASM_LIBNAME}
         LIBRARY DESTINATION "lib"
         PUBLIC_HEADER DESTINATION "include"
 )
