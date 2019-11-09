@@ -1,5 +1,6 @@
 # sleigh-disasm
 > Simple architecture-agnostic disassembly library using SLEIGH
+[![Build Status](https://travis-ci.org/starfleetcadet75/sleigh-disasm.svg?branch=master)](https://travis-ci.org/starfleetcadet75/sleigh-disasm.svg?branch=master)
 
 ## About
 [Ghidra](https://github.com/NationalSecurityAgency/ghidra) uses the [SLEIGH language](https://ghidra.re/courses/languages/html/sleigh.html) for rapidly creating support for different processors.
@@ -40,7 +41,7 @@ int main(int argc, char **argv) {
 ```
 
 ## Compiling
-Update the Ghidra submodule to pull the latest sources to build against:
+Update the Ghidra submodule:
 ```bash
 git submodule init
 git submodule update
@@ -55,7 +56,7 @@ make install
 ```
 
 By default, CMake will build the SLEIGH compiler executable and then use it to build all of the slaspecs that are found in the Ghidra submodule.
-If you do not wish to build all of the slaspecs at once, you can disable this by passing BUILD_SLASPECS=OFF to CMake.
+If you do not wish to build all of the slaspecs at once, you can disable this by passing `BUILD_SLASPECS=OFF` to CMake.
 
 ## Contributing
 All contributions are welcome.
