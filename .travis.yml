@@ -1,0 +1,27 @@
+language: cpp
+
+branches:
+  only:
+    - master
+
+os: linux
+dist: bionic
+
+compiler:
+  - clang
+  - gcc
+
+before_install:
+  - cmake -version
+
+script:
+  - mkdir build
+  - cd build
+  - cmake
+      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_INSTALL_PREFIX="$TRAVIS_BUILD_DIR/prefix"
+      -DBUILD_SLASPECS=ON
+      -DBUILD_EXAMPLES=ON
+      ..
+  - make -j4
+  - make install
