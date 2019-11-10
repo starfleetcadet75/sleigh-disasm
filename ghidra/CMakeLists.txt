@@ -1,3 +1,6 @@
+set(SLEIGH_COMPILER sleighc)
+set(SLEIGH_LIBRARY ghidra_sleigh)
+
 set(DECOMPILER_SOURCE_BASE_CXX
 		space.cc
 		float.cc
@@ -129,23 +132,21 @@ FLEX_TARGET(slghscan "${SLEIGH_SOURCE_DIR}/${SLEIGH_COMPILER_SOURCE_FLEX}" "${CM
 list(APPEND SLEIGH_COMPILER_SOURCE_CXX "${CMAKE_CURRENT_BINARY_DIR}/flex/slghscan.cpp")
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/flex/slghparse.tab.hh" "#include \"../bison/slghparse.hpp\"")
 
-add_library(ghidra_decompiler_base SHARED ${SOURCE})
-target_include_directories(ghidra_decompiler_base PUBLIC "${SLEIGH_SOURCE_DIR}")
-set_target_properties(ghidra_decompiler_base PROPERTIES POSITION_INDEPENDENT_CODE ON)
+add_library(${SLEIGH_LIBRARY} SHARED ${SOURCE} ${DECOMPILER_SOURCE_SLEIGH_CXX})
+target_include_directories(${SLEIGH_LIBRARY} PUBLIC "${SLEIGH_SOURCE_DIR}")
+set_target_properties(${SLEIGH_LIBRARY} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-add_library(ghidra_decompiler_sleigh SHARED ${DECOMPILER_SOURCE_SLEIGH_CXX})
-target_include_directories(ghidra_decompiler_sleigh PUBLIC "${SLEIGH_SOURCE_DIR}")
-set_target_properties(ghidra_decompiler_sleigh PROPERTIES POSITION_INDEPENDENT_CODE ON)
+add_executable(${SLEIGH_COMPILER} ${SLEIGH_COMPILER_SOURCE_CXX})
+target_link_libraries(${SLEIGH_COMPILER} ${SLEIGH_LIBRARY})
+target_include_directories(${SLEIGH_COMPILER}
+	PUBLIC "${SLEIGH_SOURCE_DIR}"
+	PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/flex"
+)
 
-add_executable(sleighc ${SLEIGH_COMPILER_SOURCE_CXX})
-target_link_libraries(sleighc ghidra_decompiler_sleigh ghidra_decompiler_base)
-target_include_directories(sleighc PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/flex")
-
-install(TARGETS ghidra_decompiler_sleigh ghidra_decompiler_base sleighc
+install(TARGETS ${SLEIGH_COMPILER} ${SLEIGH_LIBRARY}
 	RUNTIME DESTINATION "bin"
 	LIBRARY DESTINATION "lib"
 )
-
 
 if(BUILD_SLASPECS)
 	file(GLOB_RECURSE SLASPEC_FILES "ghidra/Ghidra/Processors/*.slaspec")
@@ -177,4 +178,5 @@ else()
 	unset(SLEIGHHOME_DEFAULT)
 endif()
 
+set(SLEIGH_LIBRARY "${SLEIGH_LIBRARY}" PARENT_SCOPE)
 set(SLEIGHHOME_DEFAULT "${SLEIGHHOME_DEFAULT}" PARENT_SCOPE)
