@@ -58,6 +58,10 @@ set(DECOMPILER_SOURCE_BASE_CXX
 		memstate.cc
 		opbehavior.cc
 		paramid.cc
+                marshal.cc
+                stringmanage.cc
+                transform.cc
+                unionresolve.cc
 )
 
 set(DECOMPILER_SOURCE_BASE_YACC
