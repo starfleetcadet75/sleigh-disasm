@@ -21,7 +21,7 @@ void SleighDisasm::disassemble(const uint8_t *buffer, size_t buffer_size, uint64
     AssemblyRaw assembly_emitter;
     auto length = 0;  // Number of bytes of each machine instruction
 
-    Address address(translator.getDefaultSpace(), start_address);
+    Address address(translator.getDefaultCodeSpace(), start_address);
 
     for (auto i = 0; i < count; i++) {
         length = translator.printAssembly(assembly_emitter, address);
